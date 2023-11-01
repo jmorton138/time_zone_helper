@@ -1,11 +1,10 @@
-package com.authenticator.timezonehelper.com.authenticator.timezonehelper
+package com.authenticator.timezonehelper
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.authenticator.timezonehelper.AppDatabase
-import com.authenticator.timezonehelper.CityDao
 import org.junit.After
 import org.junit.Test
 
@@ -28,7 +27,7 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class SimpleEntityReadWriteTest {
-    private lateinit var userDao: CityDao
+    private lateinit var cityDao: CityDao
     private lateinit var db: AppDatabase
 
     @Before
@@ -36,7 +35,8 @@ class SimpleEntityReadWriteTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, AppDatabase::class.java).build()
-        userDao = db.cityDao()
+        val db_instance = AppDatabase.getDatabase(context)
+        cityDao = db_instance.cityDao()
     }
 
     @After
@@ -47,12 +47,10 @@ class SimpleEntityReadWriteTest {
 
     @Test
     @Throws(Exception::class)
-    fun writeUserAndReadInList() {
-//        val user: User = TestUtil.createUser(3).apply {
-//            setName("george")
-//        }
-//        userDao.insert(user)
-//        val byName = userDao.findUsersByName("george")
-//        assertThat(byName.get(0), equalTo(user))
+    fun readCityInList() {
+        val allCities = cityDao.getAllCities()
+        assertEquals(allCities.size, 178764)
+        val cityQuery = cityDao.findCityByName("Guangzhou")
+        assertEquals(cityQuery.cityName, "Guangzhou")
     }
 }
