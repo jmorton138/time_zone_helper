@@ -12,6 +12,9 @@ interface CityDao {
     @Query("SELECT * FROM city")
     fun getAllCities(): List<City>
 
+    @Query("SELECT city_ascii FROM city")
+    fun getAllCityNames(): List<String>
+
     @Query("SELECT * FROM city WHERE city_ascii = :name")
     fun findCityByName(name: String): City
 
