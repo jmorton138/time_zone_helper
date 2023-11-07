@@ -1,40 +1,44 @@
 package com.authenticator.timezonehelper
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
-
-import android.view.Menu
-import android.view.MenuItem
 import com.authenticator.timezonehelper.databinding.ActivityMainBinding
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var cityDao: CityDao
+    private lateinit var cities : List<String>
+    private lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val textView = findViewById<View>(R.id.inputCityAutoComplete) as AutoCompleteTextView
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_dropdown_item_1line
+        )
+        textView.setAdapter(adapter)
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+        mainViewModel = (applicationContext as TimeZoneHelperApplication).appContainer.mainViewModelFactory.create()
+        coroutineScope.launch {
+            val filteredSuggestions = mainViewModel.getCityNames()
+                .map { it }
+                .toTypedArray()
 
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+            // Update the adapter on the main thread
+            withContext(Dispatchers.Main) {
+                adapter.clear()
+                adapter.addAll(*filteredSuggestions)
+                adapter.notifyDataSetChanged()
+            }
         }
+
     }
 
 }
