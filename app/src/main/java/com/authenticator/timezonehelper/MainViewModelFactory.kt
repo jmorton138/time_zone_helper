@@ -1,7 +1,9 @@
 package com.authenticator.timezonehelper
 
-class MainViewModelFactory(private val cityRepository: CityRepository): Factory<MainViewModel> {
+import us.dustinj.timezonemap.TimeZoneMap
+
+class MainViewModelFactory(private val cityRepository: CityRepository, private val timeZoneMap: TimeZoneMap): Factory<MainViewModel> {
     override fun create(): MainViewModel {
-        return MainViewModel(cityRepository)
+        return MainViewModel(cityRepository, timeZoneMap)
     }
 }

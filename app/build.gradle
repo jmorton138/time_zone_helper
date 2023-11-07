@@ -64,4 +64,10 @@ dependencies {
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation('us.dustinj.timezonemap:timezonemap:4.5') {
+            // Exclude standard compression library
+            exclude group: 'com.github.luben', module: 'zstd-jni'
+    }
+    // Import aar for native component compilation
+    implementation 'com.github.luben:zstd-jni:1.4.9-5@aar'
 }
