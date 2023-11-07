@@ -10,4 +10,17 @@ class CityRepository (private val cityDao : CityDao) {
             cityNames
         }
     }
+    suspend fun getLatitude(cityName: String): Double {
+        return withContext(Dispatchers.IO) {
+            val latitude = cityDao.getLatitude(cityName)
+            latitude
+        }
+    }
+    suspend fun getLongitude(cityName: String): Double {
+        return withContext(Dispatchers.IO) {
+            val longitude = cityDao.getLongitude(cityName)
+            longitude
+        }
+    }
+
 }

@@ -18,5 +18,11 @@ interface CityDao {
     @Query("SELECT * FROM city WHERE city_ascii = :name")
     fun findCityByName(name: String): City
 
+    @Query("SELECT lat FROM city WHERE city_ascii = :name")
+    fun getLatitude(name: String): Double
+
+    @Query("SELECT lng FROM city WHERE city_ascii = :name")
+    fun getLongitude(name: String): Double
+
 
 }
