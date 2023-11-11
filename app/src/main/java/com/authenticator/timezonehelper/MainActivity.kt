@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var destCityAutocompleteTextView: AutoCompleteTextView
     private lateinit var pickTimeTextView: TextView
     private lateinit var pickTimeButton: Button
+    private lateinit var clearInputsButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         destCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewDest) as AutoCompleteTextView
         pickTimeTextView = findViewById<TextView>(R.id.pickTimeTextView)
         pickTimeButton = findViewById<Button>(R.id.pickTimeButton)
+        clearInputsButton = findViewById<Button>(R.id.clearInputsButton)
         val convertButton = findViewById<Button>(R.id.convertTime)
         val sourceTimeZone = findViewById<TextView>(R.id.sourceTimeZone)
         val destTimeZone  = findViewById<TextView>(R.id.destTimeZone)
@@ -96,8 +98,13 @@ class MainActivity : AppCompatActivity() {
                 val destTime = mainViewModel.convertToDestinationTime(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)
                 findViewById<TextView>(R.id.convertedTime).text = destTime
             }
-
-
+        })
+        clearInputsButton.setOnClickListener(View.OnClickListener {
+            sourceTimeZone.text = ""
+            sourceCityAutocompleteTextView.text = null
+            destTimeZone.text = ""
+            destCityAutocompleteTextView.text = null
+            pickTimeTextView.text = ""
         })
 
     }
