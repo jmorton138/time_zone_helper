@@ -7,6 +7,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.authenticator.timezonehelper.databinding.ActivityMainBinding
@@ -24,17 +25,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var sourceCityAutocompleteTextView: AutoCompleteTextView
     private lateinit var destCityAutocompleteTextView: AutoCompleteTextView
-    private lateinit var pickTimeTextView: TextView
-    private lateinit var pickTimeButton: Button
+    private lateinit var pickTimeTextView: EditText
     private lateinit var clearInputsButton: Button
+    private lateinit var destinationTimeTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sourceCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewSource) as AutoCompleteTextView
         destCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewDest) as AutoCompleteTextView
-        pickTimeTextView = findViewById<TextView>(R.id.pickTimeTextView)
-        pickTimeButton = findViewById<Button>(R.id.pickTimeButton)
+        pickTimeTextView = findViewById<EditText>(R.id.pickTimeTextView)
+        destinationTimeTextView = findViewById<TextView>(R.id.convertedTime)
         clearInputsButton = findViewById<Button>(R.id.clearInputsButton)
         val convertButton = findViewById<Button>(R.id.convertTime)
         val sourceTimeZone = findViewById<TextView>(R.id.sourceTimeZone)
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        pickTimeButton.setOnClickListener {
+        pickTimeTextView.setOnClickListener {
             TimePickerFragment().show(supportFragmentManager, "timePicker")
             pickTimeTextView.error = null
         }
@@ -96,7 +97,8 @@ class MainActivity : AppCompatActivity() {
             val sourceTimeSelected = pickTimeTextView.text
             if (validateInputs(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)) {
                 val destTime = mainViewModel.convertToDestinationTime(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)
-                findViewById<TextView>(R.id.convertedTime).text = destTime
+                destinationTimeTextView.text = destTime
+
             }
         })
         clearInputsButton.setOnClickListener(View.OnClickListener {
@@ -104,7 +106,8 @@ class MainActivity : AppCompatActivity() {
             sourceCityAutocompleteTextView.text = null
             destTimeZone.text = ""
             destCityAutocompleteTextView.text = null
-            pickTimeTextView.text = ""
+            pickTimeTextView.text = null
+            destinationTimeTextView.text = ""
         })
 
     }
