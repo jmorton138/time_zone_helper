@@ -3,12 +3,9 @@ package com.authenticator.timezonehelper
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.authenticator.timezonehelper.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val alertDialogBuilder = AlertDialog.Builder(this)
+
         sourceCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewSource) as AutoCompleteTextView
         destCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewDest) as AutoCompleteTextView
         pickTimeTextView = findViewById<EditText>(R.id.pickTimeTextView)
@@ -97,7 +96,17 @@ class MainActivity : AppCompatActivity() {
             val sourceTimeSelected = pickTimeTextView.text
             if (validateInputs(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)) {
                 val destTime = mainViewModel.convertToDestinationTime(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)
-                destinationTimeTextView.text = destTime
+                alertDialogBuilder.setTitle("Destination Time")
+                val sourceCity = sourceCityAutocompleteTextView.text
+                val destCity = destCityAutocompleteTextView.text
+                val message = "When it is $sourceTimeSelected in $sourceCity it is $destTime in $destCity"
+                alertDialogBuilder.setMessage(destTime)
+                alertDialogBuilder.setNegativeButton("Close") { dialog, which ->
+//                    Toast.makeText(applicationContext,
+//                        "Close", Toast.LENGTH_SHORT).show()
+                }
+
+                alertDialogBuilder.show()
 
             }
         })
