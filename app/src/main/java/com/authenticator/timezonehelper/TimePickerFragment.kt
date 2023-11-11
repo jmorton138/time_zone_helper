@@ -23,7 +23,7 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-        val pickTimeTextView = getActivity()?.findViewById<TextView>(R.id.pickTime)
+        val pickTimeTextView = getActivity()?.findViewById<TextView>(R.id.pickTimeTextView)
         if (pickTimeTextView != null) {
             val dateToday = LocalDate.now().toString()
             val timeSelected: String = "$hourOfDay:$minute:00"
