@@ -57,8 +57,6 @@ class MainActivity : AppCompatActivity() {
             coroutineScope.launch {
                 val lat = mainViewModel.getLatitude(item)
                 val lng = mainViewModel.getLongitude(item)
-                Log.e("clicked", lat.toString())
-                Log.e("clicked", lng.toString())
                 val tz = mainViewModel.getTimeZoneFromCoordinates(lat, lng)
                 withContext(Dispatchers.Main) {
                     sourceTimeZone.text = tz
@@ -76,9 +74,7 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     destTimeZone.setText(tz)
                 }
-
                 val time = mainViewModel.getTimezoneCurrentTime(tz)
-                Log.e("clicked", time.toString())
             }
 
         }
