@@ -70,4 +70,6 @@ dependencies {
     }
     // Import aar for native component compilation
     implementation 'com.github.luben:zstd-jni:1.4.9-5@aar'
+    implementation "androidx.core:core-splashscreen:1.1.0-alpha02"
+
 }
