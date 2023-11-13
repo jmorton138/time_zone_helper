@@ -24,7 +24,7 @@
             android:textColor="@color/white"/>
     <TextView
             android:id="@+id/pickTimeLabel"
-            android:text="Select Time"
+            android:text="@string/select_time"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/sourceCityAutocompleteLabel"
@@ -67,7 +67,7 @@
             app:layout_constraintTop_toTopOf="@+id/pickTimeLabel"
             app:layout_constraintEnd_toEndOf="@id/cityAutoCompleteTextViewSource"
             app:layout_constraintBottom_toBottomOf="@+id/pickTimeLabel"
-            android:textColor="@color/white" android:backgroundTint="@color/white"/>
+            android:textColor="@color/white" android:backgroundTint="@color/white" android:autofillHints="Select time to convert"/>
 
     <AutoCompleteTextView
             android:id="@+id/cityAutoCompleteTextViewDest"
@@ -103,7 +103,7 @@
 
     <Button
             android:id="@+id/clearInputsButton"
-            android:text="Clear"
+            android:text="@string/clear_button"
             android:layout_marginTop="38dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
             app:layout_constraintStart_toStartOf="@+id/sourceCityAutocompleteLabel"/>
     <Button
             android:id="@+id/convertTime"
-            android:text="Convert"
+            android:text="@string/convert_time_button"
             android:layout_width="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/destCityAutocompleteLabel"
             app:layout_constraintTop_toTopOf="@id/clearInputsButton"
@@ -119,14 +119,7 @@
             android:layout_height="wrap_content"
     />
 
-    <TextView
-            android:id="@+id/convertedTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Converted"
-            app:layout_constraintTop_toBottomOf="@+id/convertTime"
-            app:layout_constraintStart_toStartOf="@+id/convertTime"
-    />
+
     <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
