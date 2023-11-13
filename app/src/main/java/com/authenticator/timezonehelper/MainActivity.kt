@@ -2,6 +2,7 @@ package com.authenticator.timezonehelper
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
@@ -18,30 +19,38 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var cityDao: CityDao
-    private lateinit var cities : List<String>
     private lateinit var mainViewModel: MainViewModel
     private lateinit var sourceCityAutocompleteTextView: AutoCompleteTextView
     private lateinit var destCityAutocompleteTextView: AutoCompleteTextView
     private lateinit var pickTimeTextView: EditText
     private lateinit var clearInputsButton: Button
     private lateinit var destinationTimeTextView: TextView
+    private lateinit var tzSourceState: String
+    private lateinit var tzDestState: String
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            with(savedInstanceState) {
+                // Restore value of members from saved state.
+                tzSourceState = getString("tz_source_state").toString()
+                Log.e("state restored", tzSourceState)
+                tzDestState = getString("tz_dest_state").toString()
+            }
+        } else  {
+            tzSourceState = ""
+            tzDestState = ""
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val alertDialogBuilder = AlertDialog.Builder(this)
-
         sourceCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewSource) as AutoCompleteTextView
         destCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewDest) as AutoCompleteTextView
         pickTimeTextView = findViewById<EditText>(R.id.pickTimeTextView)
         destinationTimeTextView = findViewById<TextView>(R.id.convertedTime)
         clearInputsButton = findViewById<Button>(R.id.clearInputsButton)
         val convertButton = findViewById<Button>(R.id.convertTime)
-        val sourceTimeZone = findViewById<TextView>(R.id.sourceTimeZone)
-        val destTimeZone  = findViewById<TextView>(R.id.destTimeZone)
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             this,
             android.R.layout.simple_dropdown_item_1line
@@ -69,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 val lng = mainViewModel.getLongitude(item)
                 val tz = mainViewModel.getTimeZoneFromCoordinates(lat, lng)
                 withContext(Dispatchers.Main) {
-                    sourceTimeZone.text = tz
+                    tzSourceState = tz
                 }
                 val time = mainViewModel.getTimezoneCurrentTime(tz)
             }
@@ -82,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 val lng = mainViewModel.getLongitude(item)
                 val tz = mainViewModel.getTimeZoneFromCoordinates(lat, lng)
                 withContext(Dispatchers.Main) {
-                    destTimeZone.setText(tz)
+                    tzDestState = tz
                 }
                 val time = mainViewModel.getTimezoneCurrentTime(tz)
             }
@@ -93,9 +102,8 @@ class MainActivity : AppCompatActivity() {
             pickTimeTextView.error = null
         }
         convertButton.setOnClickListener(View.OnClickListener {
-
-            val sourceTimeZoneText = sourceTimeZone.text
-            val destTimeZoneText = destTimeZone.text
+            val sourceTimeZoneText = tzSourceState
+            val destTimeZoneText = tzDestState
             val sourceTimeSelected = pickTimeTextView.text
             if (validateInputs(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)) {
                 val destTime = mainViewModel.convertToDestinationTime(sourceTimeZoneText, destTimeZoneText, sourceTimeSelected)
@@ -108,22 +116,31 @@ class MainActivity : AppCompatActivity() {
 //                    Toast.makeText(applicationContext,
 //                        "Close", Toast.LENGTH_SHORT).show()
                 }
-
                 alertDialogBuilder.show()
 
             }
         })
         clearInputsButton.setOnClickListener(View.OnClickListener {
-            sourceTimeZone.text = ""
+            tzSourceState = ""
             sourceCityAutocompleteTextView.text = null
-            destTimeZone.text = ""
+            tzDestState = ""
             destCityAutocompleteTextView.text = null
             pickTimeTextView.text = null
             destinationTimeTextView.text = ""
         })
 
     }
-    fun validateInputs(source: CharSequence, dest: CharSequence, sourceTime: CharSequence): Boolean {
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.e("state saved", tzSourceState)
+        outState?.run {
+            outState.putString("tz_source_state", tzSourceState)
+            outState.putString("tz_dest_state", tzDestState)
+        }
+        // Always call the superclass so it can save the view hierarchy state.
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun validateInputs(source: CharSequence, dest: CharSequence, sourceTime: CharSequence): Boolean {
         var validated:Boolean = true
         if(TextUtils.isEmpty(source)) {
             sourceCityAutocompleteTextView.error = "Please select a city"
