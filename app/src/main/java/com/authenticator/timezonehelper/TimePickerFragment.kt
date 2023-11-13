@@ -26,7 +26,11 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         val pickTimeTextView = getActivity()?.findViewById<TextView>(R.id.pickTimeTextView)
         if (pickTimeTextView != null) {
             val dateToday = LocalDate.now().toString()
-            val timeSelected: String = "$hourOfDay:$minute:00"
+            var minuteString: String = minute.toString()
+            if (minute < 10) {
+                minuteString = "0$minuteString"
+            }
+            val timeSelected: String = "$hourOfDay:$minuteString:00"
             val sourceDateTime = "$dateToday $timeSelected"
             pickTimeTextView.setText(sourceDateTime)
         }

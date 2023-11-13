@@ -8,6 +8,7 @@ import java.time.*
 import java.util.*
 
 class MainViewModel(private val cityRepository: CityRepository, private val timeZoneMap: TimeZoneMap): ViewModel() {
+    private val monthsList = listOf<String>("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
     suspend fun getCityNames(): List<String> = cityRepository.getAllCityNames()
 
     suspend fun getLatitude(cityName: String): Double {
@@ -26,7 +27,11 @@ class MainViewModel(private val cityRepository: CityRepository, private val time
         return LocalDateTime.now(zoneId)
     }
 
-    fun convertToDestinationTime(timeZoneSource: CharSequence, timeZoneDest: CharSequence, sourceTime: CharSequence): String {
+    fun convertToDestinationTime(
+        timeZoneSource: CharSequence,
+        timeZoneDest: CharSequence,
+        sourceTime: CharSequence
+    ): String {
         // TODO: refactor with time formatting helper method
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
@@ -43,6 +48,21 @@ class MainViewModel(private val cityRepository: CityRepository, private val time
         val calendar = Calendar.getInstance()
         calendar.time = formattedSourceDateTime
         calendar.add(Calendar.SECOND, timeDiff.seconds.toInt())
-        return calendar.time.toString()
+        val splitCalendarDate = calendar.time.toString().split(" ")
+        val year = splitCalendarDate[5]
+        val month = monthsList.indexOf(splitCalendarDate[1]) + 1
+        val day = splitCalendarDate[2]
+        val time = splitCalendarDate[3]
+
+//        Alternative: Going with the the other approach for now because even though indexes are
+//        hardcoded, this formatting is unlikely to change and this actually requires less
+//        string parsing because I don't need to worry about formatting single digits. The extra
+//        memory for the small months list seems worth this trade off.
+//        val year = calendar.time.year
+//        val month = calendar.time.month + 1
+//        val day = calendar.time.day
+//        val time = calendar.time.hours + calendar.time.minutes + calendar.time.seconds
+
+        return "$year-$month-$day $time"
     }
 }
