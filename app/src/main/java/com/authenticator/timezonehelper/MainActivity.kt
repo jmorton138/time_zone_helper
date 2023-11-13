@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         sourceCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewSource) as AutoCompleteTextView
         destCityAutocompleteTextView = findViewById<View>(R.id.cityAutoCompleteTextViewDest) as AutoCompleteTextView
         pickTimeTextView = findViewById<EditText>(R.id.pickTimeTextView)
-        destinationTimeTextView = findViewById<TextView>(R.id.convertedTime)
         clearInputsButton = findViewById<Button>(R.id.clearInputsButton)
         val convertButton = findViewById<Button>(R.id.convertTime)
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -126,7 +125,6 @@ class MainActivity : AppCompatActivity() {
             tzDestState = ""
             destCityAutocompleteTextView.text = null
             pickTimeTextView.text = null
-            destinationTimeTextView.text = ""
         })
 
     }
