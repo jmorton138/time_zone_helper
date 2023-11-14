@@ -8,7 +8,7 @@ import java.time.*
 import java.util.*
 
 class MainViewModel(private val cityRepository: CityRepository, private val timeZoneMap: TimeZoneMap): ViewModel() {
-    private val monthsList = listOf<String>("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    private val monthsList = listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
     suspend fun getCityNames(): List<String> = cityRepository.getAllCityNames()
 
     suspend fun getLatitude(cityName: String): Double {
@@ -22,7 +22,7 @@ class MainViewModel(private val cityRepository: CityRepository, private val time
         return timeZone?.zoneId ?: "Not Found"
     }
 
-    fun getTimezoneCurrentTime(timeZone: String): LocalDateTime {
+    private fun getTimezoneCurrentTime(timeZone: String): LocalDateTime {
         val zoneId: ZoneId = ZoneId.of(timeZone)
         return LocalDateTime.now(zoneId)
     }
@@ -54,7 +54,7 @@ class MainViewModel(private val cityRepository: CityRepository, private val time
         val day = splitCalendarDate[2]
         val time = splitCalendarDate[3]
 
-//        Alternative: Going with the the other approach for now because even though indexes are
+//        Alternative: Going with the other approach for now because even though indexes are
 //        hardcoded, this formatting is unlikely to change and this actually requires less
 //        string parsing because I don't need to worry about formatting single digits. The extra
 //        memory for the small months list seems worth this trade off.
