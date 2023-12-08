@@ -11,7 +11,7 @@
     <TextView
             android:id="@+id/sourceCityAutocompleteLabel"
             android:text="@string/select_source"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@id/cityAutoCompleteTextViewSource"
             app:layout_constraintTop_toTopOf="parent"
@@ -20,12 +20,11 @@
             app:layout_constraintEnd_toStartOf="@+id/cityAutoCompleteTextViewSource"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginTop="100dp"
-            android:layout_marginStart="139dp"
             android:textColor="@color/white"/>
     <TextView
             android:id="@+id/pickTimeLabel"
             android:text="@string/select_time"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/sourceCityAutocompleteLabel"
             app:layout_constraintStart_toStartOf="@+id/sourceCityAutocompleteLabel"
@@ -35,9 +34,9 @@
     <TextView
             android:id="@+id/destCityAutocompleteLabel"
             android:text="@string/select_dest"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/cityAutoCompleteTextViewSource"
+            android:labelFor="@id/cityAutoCompleteTextViewDest"
             app:layout_constraintStart_toStartOf="@+id/sourceCityAutocompleteLabel"
             app:layout_constraintTop_toBottomOf="@+id/pickTimeLabel"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -45,41 +44,47 @@
     <AutoCompleteTextView
             android:id="@+id/cityAutoCompleteTextViewSource"
             android:text=""
-            android:layout_width="155dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:autofillHints="Enter source city"
             android:completionThreshold="3"
-            android:dropDownWidth="wrap_content" android:layout_marginEnd="139dp"
+            android:ems="9"
+            android:dropDownWidth="wrap_content"
             app:layout_constraintTop_toTopOf="@id/sourceCityAutocompleteLabel"
             app:layout_constraintStart_toEndOf="@+id/sourceCityAutocompleteLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/sourceCityAutocompleteLabel"
-            android:backgroundTint="@color/white" android:textColor="@color/white"/>
+            android:textColor="@color/white" android:minHeight="48dp" />
 
 
     <EditText
             android:id="@+id/pickTimeTextView"
-            android:layout_width="155dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text=""
             tools:text=""
+            android:ems="9"
             android:focusableInTouchMode="false"
             app:layout_constraintTop_toTopOf="@+id/pickTimeLabel"
             app:layout_constraintEnd_toEndOf="@id/cityAutoCompleteTextViewSource"
             app:layout_constraintBottom_toBottomOf="@+id/pickTimeLabel"
-            android:textColor="@color/white" android:backgroundTint="@color/white" android:autofillHints="Select time to convert"/>
+            android:textColor="@color/white" android:autofillHints="Select time to convert" android:minHeight="48dp"
+            />
 
     <AutoCompleteTextView
             android:id="@+id/cityAutoCompleteTextViewDest"
             android:text=""
-            android:layout_width="155dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:autofillHints="Enter destination city"
             android:completionThreshold="3"
+            android:ems="9"
             android:dropDownWidth="wrap_content"
             app:layout_constraintEnd_toEndOf="@+id/cityAutoCompleteTextViewSource"
             app:layout_constraintTop_toTopOf="@+id/destCityAutocompleteLabel"
-            android:backgroundTint="@color/white"/>
+            app:layout_constraintBottom_toBottomOf="@+id/destCityAutocompleteLabel"
+            android:textColor="@color/white" android:minHeight="48dp"
+            android:textColorHint="#607D8B"/>
 
     <TextView
             android:id="@+id/sourceTimeZone"
